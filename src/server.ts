@@ -15,4 +15,8 @@ app.post("/compute", (request, response) => {
   // TODO: Return response
 });
 
+app.get("/alive", (req, res) =>{
+  return res.json("I'm alive");
+})
+
 export const createServer = () => http.createServer(app);
