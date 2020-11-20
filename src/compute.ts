@@ -74,23 +74,58 @@ export function validate(body, callback){
 }
 
 /**
- * Verify if no strike has been done at the first shot of the frame.
+ * Verify if no strike or spare has been done.
  * 
  * @param frame The frame containing the 2 shots
  */
-function isOpenFrame(frame: Frame): boolean {
-  if(frame[0] >= 0 && frame[0] < 10){
+function isOpenFrame(frame: number[]): boolean {
+  if(frame[0] + frame[1] != 10){
     return true
   }
   return false;
 }
 
 /**
+ * Checks if the frame is a spare.
+ * @param frame 
+ */
+function isSpare(frame: number[]): boolean {
+  if(frame[0] < 10 && (frame[0] + frame[1] == 10)){
+    return true
+  }
+  return false;
+}
+
+/**
+ * Checks if the frame is a strike.
+ * @param frame 
+ */
+function isStrike(frame: number[]): boolean {
+  if(frame[0] == 10){
+    return true
+  }
+  return false;
+}
+/**
  * Calculates the score of the game. Returns the score
  * 
  * @param game Computes the score of the game
  */
 export function compute(game: Game): number {
-  return 0
-  //throw new Error("Not yet implemented"); // TODO
+  let result = 0
+
+  for(let i = 0; i< 10; i++){
+    let frame = game[i];
+    if(isOpenFrame(frame)){
+      result += frame[0] + frame[1];
+    }
+    else if(isSpare(frame)){
+      result += frame[0];
+      result += 10;
+    }
+    else if(isStrike(frame)){
+      result += 20
+    }
+  }
+  return result;
 }
