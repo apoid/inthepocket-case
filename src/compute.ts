@@ -1,12 +1,59 @@
 import { Frame, Game } from "./types";
 
 /**
- * Validate if the number of frames is valid;
+ * Validates the number of frames;
  * 
- * @param body A multidimensional array of Integers
+ * @param game The Game: multidimensional array of Integers
  */
-function isFrameCountCorrect(body: Game): boolean {
-  if(body.length == 10){
+function isFrameCountValid(game: Game): boolean {
+  if(game.length == 10){
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Check if a value is numeric.
+ * 
+ * @param n the parameter
+ */
+function isNumber(value: number) {
+  return !isNaN(value);
+}
+
+/**
+ * Check if a point is not bigger than 10 or smaller than 0.
+ * 
+ * @param frame An array of integers
+ */
+function isScoreValid(frame: number[]): boolean{
+  let flag = true;
+  frame.forEach(score => {
+    if(!isNumber(score) || (score < 0 || score > 10)){
+      console.log(score)
+      flag = false;
+    }
+  });
+  return flag;
+}
+
+/**
+ * Checks if the sum of the score in a frame is less than 10.
+ * 
+ * @param game a Game
+ */
+function isScoringValid(game: Game): boolean{
+  let flag = true;
+  game.forEach(frame => {
+    if(!isScoreValid(frame) || frame[0] + frame[1] > 10){
+      flag = false;
+    }
+  });
+  return flag;
+}
+
+function isBodyValid(body): boolean{
+  if(isFrameCountValid(body) && isScoringValid(body)){
     return true;
   }
   return false;
@@ -18,12 +65,12 @@ function isFrameCountCorrect(body: Game): boolean {
  * @param body The body from the HTTP request
  * @param callback The callback function
  */
-export function validate(body, callback): Game {
-
-  let game;
-  console.log("Body: ", body.length);
-
-  return callback(null,game);
+export function validate(body, callback){
+  
+  if (isBodyValid(body)){
+    callback(null, body);
+  }
+  else callback("Invalid request");  
 }
 
 /**

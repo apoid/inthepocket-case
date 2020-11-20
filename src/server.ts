@@ -8,12 +8,20 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.post("/compute", (request, response) => {
-  const body = request.body.game;
+  console.log("Incoming HTTP request: ", request.url)
 
-  validate(body, (err, game)=>{
-    err ? response.status(400).json(err) :
-    response.json(compute(game));
-  })
+  try{
+    const body = request.body.game;
+
+    validate(body, (err, game)=>{
+      err ? response.status(400).json(err) :
+      response.json(compute(game));
+    })
+    
+  }catch(e){
+    response.status(400).json("Invalid json object. Possible error in key's name.")
+  }
+  
 
 });
 
