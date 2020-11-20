@@ -1,18 +1,20 @@
 import http from "http";
 import express from "express";
-import { compute } from "./compute";
+import { compute, validate } from "./compute";
 
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 app.post("/compute", (request, response) => {
-  const game = request.body.game;
-  // TODO: Validate input
+  const body = request.body.game;
 
-  const score = compute(game);
+  validate(body, (err, game)=>{
+    err ? response.status(400).json(err) :
+    response.json(compute(game));
+  })
 
-  // TODO: Return response
 });
 
 app.get("/alive", (req, res) =>{
