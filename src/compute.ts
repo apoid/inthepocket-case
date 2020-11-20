@@ -37,6 +37,16 @@ function isScoreValid(frame: number[]): boolean{
   return flag;
 }
 
+function isFrameScoreValid(frame: number[]): boolean{
+  if(frame.length == 2 && frame[0] + frame[1] > 10){
+    return false;
+  }
+  else if (frame.length == 3 && frame[0] + frame[1] + frame[2] > 30){
+    return false;
+  }
+  return true
+}
+
 /**
  * Checks if the sum of the score in a frame is less than 10.
  * 
@@ -45,7 +55,7 @@ function isScoreValid(frame: number[]): boolean{
 function isScoringValid(game: Game): boolean{
   let flag = true;
   game.forEach(frame => {
-    if(!isScoreValid(frame) || frame[0] + frame[1] > 10){
+    if(!isScoreValid(frame) || !isFrameScoreValid(frame)){
       flag = false;
     }
   });
