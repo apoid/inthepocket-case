@@ -1,6 +1,7 @@
 import http from "http";
 import express from "express";
-import { compute, validate } from "./compute";
+import { compute } from "./compute";
+import{validate} from "./validate";
 
 const app = express();
 
