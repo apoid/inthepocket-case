@@ -1,6 +1,15 @@
 import { Frame, Game } from "./types";
 
 /**
+ * Check if a value is numeric.
+ * 
+ * @param n the parameter
+ */
+function isNumber(value: number) {
+  return !isNaN(value);
+}
+
+/**
  * Validates the number of frames;
  * 
  * @param game The Game: multidimensional array of Integers
@@ -13,16 +22,7 @@ function isFrameCountValid(game: Game): boolean {
 }
 
 /**
- * Check if a value is numeric.
- * 
- * @param n the parameter
- */
-function isNumber(value: number) {
-  return !isNaN(value);
-}
-
-/**
- * Check if a point is not bigger than 10 or smaller than 0.
+ * Check if a score is smaller than 10 or bigger than 0.
  * 
  * @param frame An array of integers
  */
@@ -37,6 +37,10 @@ function isScoreValid(frame: number[]): boolean{
   return flag;
 }
 
+/**
+ * Check if the scoring for a Frame is valid.
+ * @param frame 
+ */
 function isFrameScoreValid(frame: number[]): boolean{
   if(frame.length == 2 && frame[0] + frame[1] > 10){
     return false;
@@ -48,7 +52,7 @@ function isFrameScoreValid(frame: number[]): boolean{
 }
 
 /**
- * Checks if the sum of the score in a frame is less than 10.
+ * Checks if the Game scoring is valid.
  * 
  * @param game a Game
  */
@@ -126,15 +130,24 @@ export function compute(game: Game): number {
 
   for(let i = 0; i< 10; i++){
     let frame = game[i];
-    if(isOpenFrame(frame)){
+    //TODO: beautify + validate last frame's 3 shots
+    if(i == 9){
+      result += frame[0] + frame[1] + frame[2];
+    }
+    else if(isOpenFrame(frame)){
       result += frame[0] + frame[1];
+
+      console.log("game "+i+": open frame", result);
     }
     else if(isSpare(frame)){
-      result += frame[0];
-      result += 10;
+      result += 10 + game[i+1][0];
+
+      console.log("game "+i+": spare", result);
     }
     else if(isStrike(frame)){
-      result += 20
+      result += 10 + game[i+1][0] + game[i+1][1];
+
+      console.log("game "+i+": strike", result);
     }
   }
   return result;

@@ -14,12 +14,12 @@ app.post("/compute", (request, response) => {
     const body = request.body.game;
 
     validate(body, (err, game)=>{
-      err ? response.status(400).json(err) :
-      response.json(compute(game));
+      err ? response.status(400).json({error: err}) :
+      response.json({score: compute(game)});
     })
-    
+
   }catch(e){
-    response.status(400).json("Invalid json object. Possible error in key's name.")
+    response.status(400).json({"Error": "Invalid json object. Possible error in key's name."});
   }
   
 
