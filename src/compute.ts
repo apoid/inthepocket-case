@@ -11,7 +11,7 @@ export function compute(game: Game): number {
   for(let i = 0; i< 10; i++){
     let frame = game[i];
     result += computeFrameScore(i, frame, game);
-    console.log("Frame "+(i + 1)+": ", result); //debug
+    //console.log("Frame "+(i + 1)+": ", result); //debug
   }
   return result;
 }
